@@ -1,0 +1,40 @@
+name: Build TikTokSimSpoof
+
+# This triggers the build when you push code, or manually from the Actions tab
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: 
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clones the repository and sets the working directory
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up the Java environment needed for Gradle
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      # 3. Makes the Gradle wrapper executable
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 4. Your requested compile command
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      # 5. Grabs the compiled APK and uploads it so you can download it
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TikTokSimSpoof-Release
+          path: app/build/outputs/apk/release/*.apk
