@@ -28,13 +28,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # 4. Your requested compile command
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
+# 4. Change this to assembleDebug to auto-sign the app
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-      # 5. Grabs the compiled APK and uploads it so you can download it
+      # 5. Update the path to pull from the debug folder instead of release
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TikTokSimSpoof-Release
-          path: app/build/outputs/apk/release/*.apk
+          name: TikTokSimSpoof-Debug
+          path: app/build/outputs/apk/debug/*.apk
